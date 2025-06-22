@@ -1,11 +1,12 @@
-from flask import Flask, request, jsonify
-import pandas as pd
-import numpy as np
-from scipy.stats import kurtosis
 import io
 import logging
+import pandas as pd
+import numpy as np
+from flask import Blueprint, request, jsonify
+from scipy.stats import kurtosis
 
-app = Flask(__name__)
+
+statistic_bp = Blueprint('statistic_bp', __name__)
 
 
 logging.basicConfig(level=logging.INFO)
@@ -38,8 +39,8 @@ def calculate_statistics(data):
     
     return stats
 
-@app.route('/generateReport', methods=['POST'])
-def generate_report():
+@statistic_bp.route('/generateReport', methods=['POST'])
+def generate_report_service():
     """
     Endpoint to generate statistical report from uploaded CSV file
     """
@@ -94,23 +95,3 @@ def generate_report():
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
         return jsonify({'error': f'Unexpected error: {str(e)}'}), 500
-
-@app.route('/health', methods=['GET'])
-def health_check():
-    """Health check endpoint"""
-    return jsonify({'status': 'healthy', 'message': 'API is running'}), 200
-
-@app.route('/', methods=['GET'])
-def home():
-    return jsonify({
-        'message': 'Log Analysis REST API',
-        'version': '1.0.0',
-        'endpoints': {
-            '/generateReport': 'POST - Upload CSV file and get statistical report',
-            '/health': 'GET - Health check',
-            '/': 'GET - API information'
-        }
-    }), 200
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000, debug=True)

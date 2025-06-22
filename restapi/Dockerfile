@@ -4,12 +4,12 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY my_rest_api.py .
+COPY pkg ./pkg
 
 EXPOSE 10000
 
-ENV FLASK_APP=my_rest_api.py
+ENV FLASK_APP=pkg.controller.statistic
 ENV FLASK_ENV=production
 ENV PYTHONUNBUFFERED=1
 
-CMD ["python", "my_rest_api.py"]
+CMD ["python", "-m", "pkg.controller.statistic"]

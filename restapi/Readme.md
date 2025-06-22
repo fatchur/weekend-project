@@ -1,6 +1,6 @@
 # Log Analysis REST API
 
-A Flask-based REST API application that processes CSV log files and generates statistical reports. The application is containerized using Docker and can be deployed using Docker Compose.
+A Flask-based REST API application that will processes a CSV log file and generates statistical reports as a response. The application is containerized using Docker  and docker-compose as required.
 
 ## Features
 
@@ -14,22 +14,23 @@ A Flask-based REST API application that processes CSV log files and generates st
 ## Project Structure
 
 ```
-restapi/
-├── Dockerfile
-├── docker-compose.yml
-├── my_rest_api.py
-├── requirements.txt
-└── README.md
+WEEKEND-PRPJECT
+- restapi/
+  ├── Dockerfile
+  ├── docker-compose.yml
+  ├── my_rest_api.py
+  ├── requirements.txt
+  └── README.md
 ```
 
-## API Endpoints
+## API Contracts
 
 ### POST /generateReport
 - **Description**: Upload a CSV file and receive statistical analysis
 - **Method**: POST
 - **Content-Type**: multipart/form-data
 - **Parameters**: 
-  - `file`: CSV file (form field name)
+  - `file`: CSV file (form field name)  (Mandatory)
 - **Response**: JSON containing statistical analysis
 
 ### GET /health
@@ -108,7 +109,7 @@ result example:
 
 ## Usage Example
 
-### Python Client
+### Python Client Example
 ```python
 import requests
 
@@ -130,47 +131,48 @@ else:
 
 ### cURL Example
 ```bash
-curl -X POST -F "file=@M6.csv" http://localhost:10000/generateReport
+cd restapi 
+curl -X POST -F "file=@data/M6.csv" http://localhost:10000/generateReport
 ```
 
 ## Expected Response Format
 
 ```json
 {
-  "status": "success",
   "message": "Report generated successfully",
-  "total_rows": 23,
   "numerical_columns": 4,
   "statistics": {
-    "Temperature": {
-      "min": 55.0,
-      "max": 65.0,
-      "mean": 58.95652173913043,
-      "std": 3.1234567890123456,
-      "kurtosis": -0.5678901234567890
-    },
     "CPU Usage": {
-      "min": 10.38520516,
-      "max": 35.04076087,
-      "mean": 15.123456789012345,
-      "std": 6.789012345678901,
-      "kurtosis": 2.3456789012345678
+      "kurtosis": -1.175431835972032,
+      "max": 35.790273556231,
+      "mean": 12.032543496108909,
+      "min": 0.8569665348256613,
+      "std": 8.998261080783331
     },
     "RAM Usage": {
-      "min": 52.27745445,
-      "max": 54.97228704,
-      "mean": 53.456789012345678,
-      "std": 0.789012345678901,
-      "kurtosis": -1.2345678901234567
+      "kurtosis": -1.3820519138802085,
+      "max": 55.31577717117853,
+      "mean": 51.27187088628609,
+      "min": 45.542750060417816,
+      "std": 1.4204621437761469
     },
     "Storage Usage": {
-      "min": 3.0,
-      "max": 7.0,
-      "mean": 4.130434782608696,
-      "std": 1.8612345678901234,
-      "kurtosis": 0.1234567890123456
+      "kurtosis": -1.4369391494448847,
+      "max": 34.0,
+      "mean": 14.768780487804879,
+      "min": 2.0,
+      "std": 11.792494333833817
+    },
+    "Temperature": {
+      "kurtosis": -0.6684502389011087,
+      "max": 70.0,
+      "mean": 59.71581881533101,
+      "min": 55.0,
+      "std": 3.188256315525835
     }
-  }
+  },
+  "status": "success",
+  "total_rows": 7175
 }
 ```
 
